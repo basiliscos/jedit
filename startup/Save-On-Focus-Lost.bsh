@@ -1,0 +1,18 @@
+EditBus.addToBus(new EBComponent() {
+    public void handleMessage(EBMessage message) {
+      if (message instanceof EditPaneUpdate) {
+        if(message.getWhat() == EditPaneUpdate.CREATED){
+          Log.log(Log.MESSAGE, BeanShell.class, "adding deactivation listener... ");
+          myView = message.getEditPane().getView();
+          myView.addWindowListener(new WindowListener(){
+            public void windowDeactivated(WindowEvent e){
+              Log.log(Log.MESSAGE, BeanShell.class, "windowDeactivated event");
+              jEdit.saveAllBuffers(myView,false);
+            }
+            invoke( name, args ) { };
+          });
+          Log.log(Log.MESSAGE, BeanShell.class, "success");
+         }
+      }
+    }
+});
