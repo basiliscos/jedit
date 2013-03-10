@@ -7,7 +7,12 @@ EditBus.addToBus(new EBComponent() {
           myView.addWindowListener(new WindowListener(){
             public void windowDeactivated(WindowEvent e){
               Log.log(Log.MESSAGE, BeanShell.class, "windowDeactivated event");
-              jEdit.saveAllBuffers(myView,false);
+              oppositeWindow = e.getOppositeWindow();
+              if(oppositeWindow == null){
+				  Log.log(Log.MESSAGE, BeanShell.class, "application is loosing focus ");
+				  //jEdit.saveAllBuffers(myView,false);
+				  jEdit.saveAllBuffers(e.getSource(),false);
+              }
             }
             invoke( name, args ) { };
           });
