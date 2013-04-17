@@ -1,3 +1,7 @@
+// author: Ivan Baidakou
+// version : 0.01
+// license: gpl v3
+
 EditBus.addToBus(new EBComponent() {
     public void handleMessage(EBMessage message) {
       if (message instanceof EditPaneUpdate) {
@@ -6,12 +10,19 @@ EditBus.addToBus(new EBComponent() {
           myView = message.getEditPane().getView();
           myView.addWindowListener(new WindowListener(){
             public void windowDeactivated(WindowEvent e){
+              view = e.getSource();
               Log.log(Log.MESSAGE, BeanShell.class, "windowDeactivated event");
               oppositeWindow = e.getOppositeWindow();
               if(oppositeWindow == null){
-				  Log.log(Log.MESSAGE, BeanShell.class, "application is loosing focus ");
-				  //jEdit.saveAllBuffers(myView,false);
-				  jEdit.saveAllBuffers(e.getSource(),false);
+                Log.log(Log.MESSAGE, BeanShell.class, "application is loosing focus ");
+                //jEdit.saveAllBuffers(view,false);
+                buffers = jEdit.getBuffers();
+                for (int i=0; i<buffers.length; i++){
+                  b = buffers[i];
+                  if(b.isDirty()){
+                    b.save(view,null);
+                  }
+                }
               }
             }
             invoke( name, args ) { };
