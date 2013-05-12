@@ -1,6 +1,14 @@
 // author: Ivan Baidakou
 // version : 0.01
 // license: gpl v3
+//
+//CHANGES
+//-------
+//0.02  May 12 23:24:21 2013
+//		Save only non-new files
+//
+//0.01  Apr 17 18:23:50 2013
+//		Initial version
 
 EditBus.addToBus(new EBComponent() {
     public void handleMessage(EBMessage message) {
@@ -19,7 +27,7 @@ EditBus.addToBus(new EBComponent() {
                 buffers = jEdit.getBuffers();
                 for (int i=0; i<buffers.length; i++){
                   b = buffers[i];
-                  if(b.isDirty()){
+                  if(b.isDirty() && !b.isNewFile()){
                     b.save(view,null);
                   }
                 }
